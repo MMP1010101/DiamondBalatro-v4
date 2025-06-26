@@ -1,0 +1,10 @@
+{
+    "name": "Objects Diamond - Isaac Items",
+    "id": "ObjectsDiamond", 
+    "author": "salva",
+    "description": "Isaac-themed items for Balatro with organized file structure",
+    "version": "1.0.0",
+    "dependencies": ["Steamodded>=1.0.0"],
+    "prefix": "od",
+    "main_file": "main.lua"
+}
