@@ -19,8 +19,9 @@ music_system.config = {
         sheol = "Don_t.ogg",
         cathedral = "Don_t.ogg",
         chest = "Don_t.ogg",
-        boss = "balatrez.ogg",  -- Boss music diferente
-        shop = "tienda.ogg",    -- Música específica de tienda
+        boss = "balatrez.ogg",         -- Boss music normal
+        boss_final = "final_balatro.ogg", -- Boss final (ronda 8)
+        shop = "tienda.ogg",           -- Música específica de tienda
         secret = "Don_t.ogg"
     }
 }
@@ -123,6 +124,24 @@ function music_system.register_music_tracks()
         end,
     })
     
+    -- Boss final music (ronda 8) - Uses final_balatro.ogg (HIGHEST PRIORITY)
+    SMODS.Sound({
+        key = "isaac_boss_final_music",
+        path = music_system.config.tracks.boss_final,
+        vol = music_system.config.volume,
+        pitch = 1.0,
+        select_music_track = function()
+            return music_system.config.enabled
+                and G.GAME
+                and G.GAME.blind
+                and G.GAME.blind.boss
+                and G.GAME.round_resets
+                and G.GAME.round_resets.ante
+                and G.GAME.round_resets.ante % 8 == 0 -- Ronda 8, 16, 24, etc.
+                and 20 -- MÁXIMA prioridad para boss final
+        end,
+    })
+    
     -- Boss music (when fighting boss blinds) - Uses balatrez.ogg
     SMODS.Sound({
         key = "isaac_boss_music",
@@ -199,6 +218,7 @@ function music_system.setup_game_hooks()
     print("🎵 Ante 9+: Don_t.ogg (Sheol)")
     print("🎵 Ciega Pequeña/Grande: Don_t.ogg")
     print("🎵 Boss fights: balatrez.ogg")
+    print("🎵 Boss Final (ronda 8): final_balatro.ogg")
     print("🎵 Shop: tienda.ogg")
 end
 
