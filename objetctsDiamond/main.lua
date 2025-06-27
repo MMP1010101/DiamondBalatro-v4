@@ -24,6 +24,55 @@ SMODS.Atlas{
     py = 95
 }
 
+SMODS.Atlas{
+    key = "od_doble",
+    path = "doble.png",
+    px = 71,
+    py = 95
+}
+
+SMODS.Atlas{
+    key = "od_clavos",
+    path = "clavos.png",
+    px = 71,
+    py = 95
+}
+
+SMODS.Atlas{
+    key = "od_corona",
+    path = "corona.png",
+    px = 71,
+    py = 95
+}
+
+SMODS.Atlas{
+    key = "od_dead_day",
+    path = "dead_day.png",
+    px = 71,
+    py = 95
+}
+
+SMODS.Atlas{
+    key = "od_descarte",
+    path = "descartes.png",
+    px = 71,
+    py = 95
+}
+
+SMODS.Atlas{
+    key = "od_doble_bateria",
+    path = "doble_bateria.png",
+    px = 71,
+    py = 95
+}
+
+SMODS.Atlas{
+    key = "od_ede_blice",
+    path = "ede_blice.png",
+    px = 71,
+    py = 95
+}
+
 -- Register atlas for booster pack
 SMODS.Atlas{
     key = "od_diamond_pack",
@@ -32,6 +81,7 @@ SMODS.Atlas{
     py = 93   -- ¡DIMENSIONES CORRECTAS!
 }
 
+
 -- Load all items from the items folder
 local function load_items()
     local items_path = mod_path .. "items/"
@@ -39,9 +89,13 @@ local function load_items()
     -- List of item files to load
     local item_files = {
         "caja_azul.lua",
-        "joker_isaac_diamond.lua", 
-        "joker_isaac_skull.lua",
-        "joker_isaac_trinket.lua"
+        "doble.lua",
+        "clavos.lua",
+        "corona.lua",
+        "dead_day.lua",
+        "descarte.lua",
+        "doble_bateria.lua",
+        "ede_blice.lua"
     }
     
     -- Load each item file
@@ -51,7 +105,7 @@ local function load_items()
             local item_data = assert(loadfile(file_path))()
             if item_data then
                 -- Register the joker with SMODS using correct syntax
-                SMODS.Joker{
+                local joker_def = {
                     key = item_data.key,
                     loc_txt = item_data.loc_txt,
                     config = item_data.config,
@@ -67,6 +121,26 @@ local function load_items()
                     atlas = item_data.atlas,
                     calculate = item_data.calculate
                 }
+                
+                -- Añadir funciones opcionales si existen
+                if item_data.loc_def then
+                    joker_def.loc_def = item_data.loc_def
+                end
+                -- Comentamos generate_ui temporalmente para evitar crashes
+                -- if item_data.generate_ui then
+                --     joker_def.generate_ui = item_data.generate_ui
+                -- end
+                if item_data.add_to_deck then
+                    joker_def.add_to_deck = item_data.add_to_deck
+                end
+                if item_data.remove_from_deck then
+                    joker_def.remove_from_deck = item_data.remove_from_deck
+                end
+                if item_data.loc_vars then
+                    joker_def.loc_vars = item_data.loc_vars
+                end
+                
+                SMODS.Joker(joker_def)
                 
                 print("Loaded Isaac item: " .. item_data.key)
             end
