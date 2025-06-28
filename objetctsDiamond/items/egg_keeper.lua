@@ -13,7 +13,9 @@ return {
         }
     },
     config = {
-        extra = {}
+        extra = {
+            interest_given_this_round = false  -- Flag para evitar duplicados
+        }
     },
     rarity = 2, -- Uncommon
     cost = 6,
@@ -33,34 +35,45 @@ return {
     calculate = function(self, card, context)
         -- Interceptar el contexto de final de ronda para modificar el interés
         if context.end_of_round and not context.individual and not context.repetition then
-            -- El interés normalmente se calcula aquí, pero necesitamos interceptar antes
-            if G.GAME and G.GAME.dollars then
-                -- Calcular interés infinito (normalmente limitado a $5)
-                local normal_interest = math.min(math.floor(G.GAME.dollars / 5), 5) -- Interés normal (máximo $5)
-                local infinite_interest = math.floor(G.GAME.dollars / 5) -- Interés infinito
-                local extra_interest = infinite_interest - normal_interest
+            -- Solo dar interés extra si no se ha dado ya en esta ronda
+            if not card.ability.extra.interest_given_this_round then
+                card.ability.extra.interest_given_this_round = true
                 
-                if extra_interest > 0 then
-                    -- Dar el interés extra que supera el límite normal
-                    ease_dollars(extra_interest)
+                -- El interés normalmente se calcula aquí, pero necesitamos interceptar antes
+                if G.GAME and G.GAME.dollars then
+                    -- Calcular interés infinito (normalmente limitado a $5)
+                    local normal_interest = math.min(math.floor(G.GAME.dollars / 5), 5) -- Interés normal (máximo $5)
+                    local infinite_interest = math.floor(G.GAME.dollars / 5) -- Interés infinito
+                    local extra_interest = infinite_interest - normal_interest
                     
-                    -- Feedback visual
-                    card_eval_status_text(card, 'dollars', extra_interest, nil, nil, {
-                        message = "¡Interés infinito!",
-                        colour = G.C.MONEY,
-                        delay = 0.45
-                    })
-                    
-                    print("DEBUG: egg_keeper - Interés extra dado: $" .. extra_interest .. " (total: $" .. infinite_interest .. ")")
-                    
-                    return {
-                        message = localize('k_plus_dollars'),
-                        dollars = extra_interest,
-                        colour = G.C.MONEY
-                    }
+                    if extra_interest > 0 then
+                        -- Dar el interés extra que supera el límite normal
+                        ease_dollars(extra_interest)
+                        
+                        -- Feedback visual
+                        card_eval_status_text(card, 'dollars', extra_interest, nil, nil, {
+                            message = "¡Interés infinito!",
+                            colour = G.C.MONEY,
+                            delay = 0.45
+                        })
+                        
+                        print("DEBUG: egg_keeper - Interés extra dado: $" .. extra_interest .. " (total: $" .. infinite_interest .. ")")
+                        
+                        return {
+                            message = localize('k_plus_dollars'),
+                            dollars = extra_interest,
+                            colour = G.C.MONEY
+                        }
+                    end
                 end
             end
         end
+        
+        -- Resetear el flag al inicio de nueva ronda
+        if context.setting_blind and not card.ability.extra.interest_given_this_round then
+            card.ability.extra.interest_given_this_round = false
+        end
+        
         return nil
     end,
     

@@ -80,6 +80,55 @@ SMODS.Atlas{
     py = 95
 }
 
+SMODS.Atlas{
+    key = "od_god_head",
+    path = "godheat.png",
+    px = 71,
+    py = 95
+}
+
+SMODS.Atlas{
+    key = "od_mushroom",
+    path = "hongo.png",
+    px = 71,
+    py = 95
+}
+
+SMODS.Atlas{
+    key = "od_houli_shot",
+    path = "houli_shot.png",
+    px = 71,
+    py = 95
+}
+
+SMODS.Atlas{
+    key = "od_incognita1",
+    path = "incognita1.png",
+    px = 71,
+    py = 95
+}
+
+SMODS.Atlas{
+    key = "od_iv_bag",
+    path = "iv_bag.png",
+    px = 71,
+    py = 95
+}
+
+SMODS.Atlas{
+    key = "od_black_judas",
+    path = "judas.png",
+    px = 71,
+    py = 95
+}
+
+SMODS.Atlas{
+    key = "od_libra",
+    path = "libra.png",
+    px = 71,
+    py = 95
+}
+
 -- Register atlas for booster pack
 SMODS.Atlas{
     key = "od_diamond_pack",
@@ -103,7 +152,15 @@ local function load_items()
         "descarte.lua",
         "doble_bateria.lua",
         "ede_blice.lua",
-        "egg_keeper.lua"
+        "egg_keeper.lua",
+        "god_head.lua",
+        "mushroom.lua",
+        "houli_shot.lua",
+        "incognita1.lua",
+        "iv_bag.lua",
+        "black_judas.lua",
+        "black_judas_mult.lua",
+        "libra.lua"
     }
     
     -- Load each item file
@@ -206,7 +263,7 @@ local function setup_booster_localization()
         name = "Diamond Pack",
         text = {
             "Choose {C:attention}#1#{} of up to",
-            "{C:attention}#2#{} {C:attention}Diamond Jokers{} to",
+            "{C:attention}#2#{} {C:attention}Isaac Items{} to",
             "add to your collection"
         }
     }
