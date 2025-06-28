@@ -73,6 +73,13 @@ SMODS.Atlas{
     py = 95
 }
 
+SMODS.Atlas{
+    key = "od_egg_keeper",
+    path = "egg_keper.png",
+    px = 71,
+    py = 95
+}
+
 -- Register atlas for booster pack
 SMODS.Atlas{
     key = "od_diamond_pack",
@@ -95,7 +102,8 @@ local function load_items()
         "dead_day.lua",
         "descarte.lua",
         "doble_bateria.lua",
-        "ede_blice.lua"
+        "ede_blice.lua",
+        "egg_keeper.lua"
     }
     
     -- Load each item file
